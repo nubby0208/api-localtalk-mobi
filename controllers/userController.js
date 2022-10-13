@@ -23,8 +23,9 @@ module.exports = {
     createUser: async (req, res) => {
         const { error } = createUserValidation(req.body);
         if (!error || 1) {
-            const { name, email, password, gender, role, phoneNumber, address, isVerified, status, note, number, deviceToken } = req.body;
-            let { location } = req.body;
+            // const { name, email, password, gender, role, phoneNumber, address, isVerified, status, note, number, deviceToken } = req.body;
+            const { email, password, gender, role,} = req.body;
+            // let { location } = req.body;
             const hashedPassword = await passwordHash.generate(password);
 
             const user = await userSchemaModel.findOne({ email });
@@ -36,40 +37,39 @@ module.exports = {
                 });
             }
 
-            if (location) {
-                const locationObj = location.split(',');
-                location = {
-                    type: "Point",
-                    coordinates: [Number(locationObj[1].trim()), Number(locationObj[0].trim())]
-                };
-            } else {
-                location = {
-                    type: "Point",
-                    coordinates: [37.617680, 55.755871]
-                };
-            }
-            const countryCode = await getCountryCode(location.coordinates[1], location.coordinates[0]);
-            console.log(countryCode.data);
-
+            // if (location) {
+            //     const locationObj = location.split(',');
+            //     location = {
+            //         type: "Point",
+            //         coordinates: [Number(locationObj[1].trim()), Number(locationObj[0].trim())]
+            //     };
+            // } else {
+            //     location = {
+            //         type: "Point",
+            //         coordinates: [37.617680, 55.755871]
+            //     };
+            // }
+            // const countryCode = await getCountryCode(location.coordinates[1], location.coordinates[0]);
+            // console.log(countryCode.data);
             return new Promise((resolve, reject) => {
                 const params = {
-                    name: name,
+                    // name: name,
                     email: email,
                     gender: gender,
                     password: hashedPassword,
                     originPassword: password,
                     role: role,
-                    phoneNumber: phoneNumber,
-                    address: address,
-                    location: location,
-                    country: countryCode.data.countryName,
-                    isVerified: isVerified,
-                    status: status,
-                    note: note,
-                    like: 1,
+                    // phoneNumber: phoneNumber,
+                    // address: address,
+                    // location: location,
+                    // country: countryCode.data.countryName,
+                    // isVerified: isVerified,
+                    // status: status,
+                    // note: note,
+                    // like: 1,
                     created: new Date(),
-                    number: number,
-                    deviceToken: deviceToken
+                    // number: number,
+                    // deviceToken: deviceToken
                 };
                 const userModel = userSchemaModel(params);
                 userModel.save(async err => {
@@ -81,6 +81,7 @@ module.exports = {
                     } else {
                         const accessToken = jwt.sign({ userModel }, 'secret');
                         //   //numbersSchemaModel.findOneAndUpdate({number},{isAssigned : true});
+                        try{
                         if (number) {
                             mongoService.findOne("numbers", { number }, async (result) => {
                                 if (!result) {
@@ -95,6 +96,7 @@ module.exports = {
                             });
                         }
 
+                        }catch{}
                         res.json({
                             success: true,
                             message: 'create user successfully',
@@ -296,6 +298,7 @@ module.exports = {
                 }
             }
             const userSpecialPermissions = await UserSpecialPermssionSchemaModel.findOne({ userId: userId });
+            
             const max_coverage = (userSpecialPermissions && userSpecialPermissions.max_coverage) || (parameterSettings && parameterSettings.settings.default_coverage) || 150;
             let userObj = user.toObject();
             if (isNull(userObj.coverage)) {
@@ -305,11 +308,10 @@ module.exports = {
         }  catch (e) {
     Sentry.captureException(e);
      res.status(500).json({ error: true, data: "no user found !" });
-  } 
-  // finally {
-  //   transaction.finish();
-  // }
-        
+  }
+//     finally {
+//     transaction.finish();
+//   }     
     },
     getUserByEmail: async (req, res) => {
         if (req.body.email) {

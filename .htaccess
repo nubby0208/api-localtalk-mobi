@@ -1,12 +1,7 @@
 RewriteEngine On
-# RewriteRule ^$ http://127.0.0.1:58082/ [P,L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-# RewriteRule ^(.*)$ http://127.0.0.1:58082/$1 [P,L]
-
-
 RewriteRule ^(.*)$ ws://127.0.0.1:58082/$1  [P,QSA,L]
-# RewriteRule ^socket3/(.*)$ ws://example_3.com:3000/$1  [P,QSA,L] #Not working
 
 # php -- BEGIN cPanel-generated handler, do not edit
 # Set the “ea-php71” package as the default “PHP” programming language.

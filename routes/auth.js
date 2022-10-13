@@ -17,8 +17,7 @@ const { verifyToken } = require('../middlewares/authHandler');
 
 router.route('/register').post(register);
 router.route('/login').post(login);
-router.route('/loginV2').post(login);
-router.route('/loginV3').post(loginV2);
+router.route('/loginV2').post(loginV2);
 router.route('/online-status').put(verifyToken, putState);
 router.route('/online-status').get(verifyToken, getState);
 router.route('/adminlogin').post(adminlogin);

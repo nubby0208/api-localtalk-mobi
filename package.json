@@ -23,6 +23,7 @@
     "express-async-handler": "^1.2.0",
     "express-session": "^1.17.2",
     "firebase-admin": "^8.9.2",
+    "gifsicle": "^5.2.1",
     "google-play-scraper": "^8.0.4",
     "helmet": "^3.21.3",
     "i18n-iso-countries": "^6.8.0",
@@ -32,7 +33,6 @@
     "mongoose-unique-validator": "^3.0.0",
     "morgan": "^1.9.1",
     "multer": "^1.4.2",
-    "node": "^18.6.0",
     "node-cgi": "^0.10.0",
     "node-cron": "^3.0.0",
     "node-fetch": "^3.0.0",
@@ -40,6 +40,7 @@
     "password-hash": "^1.2.2",
     "path": "^0.12.7",
     "pm2": "^5.2.0",
+    "pngquant-bin": "^6.0.1",
     "socket.io": "^2.3.0",
     "underscore": "^1.9.2"
   },

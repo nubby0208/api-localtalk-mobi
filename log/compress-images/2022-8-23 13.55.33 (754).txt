@@ -1,0 +1,7 @@
+File from: [https://api.localtalk.mobi/uploads/public_chat_messages/uploads/public_chat_messages/1663956837818-Untitled.png]
+
+File to: [https://api.localtalk.mobi/uploads/public_chat_messages/uploads/public_chat_messages/minified/1663956837818-Untitled.png]
+
+Compression algorithm: [-]
+
+Description: File does not exist!

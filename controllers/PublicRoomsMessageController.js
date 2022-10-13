@@ -34,10 +34,17 @@ module.exports = {
                 .aggregate([
                     {
                         $match: {
-                            room_id: new mongoose.Types.ObjectId(req.body.room_id),
-                            $or: [
-                                {receiver_ids: {"$all": [userId]}},
-                                {is_announcement: true}
+                            // room_id: new mongoose.Types.ObjectId(req.body.room_id),
+                            // $or: [
+                            //     {receiver_ids: {"$all": [userId]}},
+                            //     {is_announcement: true}
+                            // ]
+                            $or:[
+                                {room_id: new mongoose.Types.ObjectId(req.body.room_id),},
+                                {$or:[
+                                    {receiver_ids: {"$all": [userId]}},
+                                    {is_announcement: true}
+                                ]}
                             ]
                         }
                     },
@@ -142,10 +149,17 @@ module.exports = {
 
             let totalCommentCount = await PublicRoomMessageSchemaModel
                 .find({
-                    room_id: req.body.room_id,
-                    $or: [
-                        {receiver_ids: [userId]},
-                        {is_announcement: true}
+                    // room_id: req.body.room_id,
+                    // $or: [
+                    //     {receiver_ids: [userId]},
+                    //     {is_announcement: true}
+                    // ]
+                    $or:[
+                        {room_id: req.body.room_id},
+                        {$or:[
+                            {receiver_ids: [userId]},
+                            {is_announcement: true}
+                        ]}
                     ]
                 })
                 .countDocuments()
@@ -182,15 +196,26 @@ module.exports = {
             const { change_kilometers_to_miles } = user;
             const messages = await PublicRoomMessageSchemaModel.aggregate([
                     {
+                        // $match: {
+                        //     room_id: new mongoose.Types.ObjectId(req.body.room_id),
+                        //     top: true,
+                        //     $or: [
+                        //         {receiver_ids: {"$all": [userId]}},
+                        //         {is_announcement: true}
+                        //     ]
+                        // }
                         $match: {
-                            room_id: new mongoose.Types.ObjectId(req.body.room_id),
-                            top: true,
-                            $or: [
-                                {receiver_ids: {"$all": [userId]}},
-                                {is_announcement: true}
-                            ]
-                        } 
-                    },
+                                top: true,
+                                $or:[
+                                    
+                                    {room_id: new mongoose.Types.ObjectId(req.body.room_id),},
+                                    {$or:[
+                                        {receiver_ids: {"$all": [userId]}},
+                                        {is_announcement: true}
+                                    ]}
+                                ]
+                            }
+                        },
                     {
                         $lookup: {
                             from: "users", // collection name in db
@@ -312,11 +337,19 @@ module.exports = {
 
             let totalCommentCount = await PublicRoomMessageSchemaModel
                 .find({
-                    room_id: req.body.room_id,
+                    // room_id: req.body.room_id,
+                    // top: true,
+                    // $or: [
+                    //     {receiver_ids: [userId]},
+                    //     {is_announcement: true}
+                    // ],
                     top: true,
-                    $or: [
-                        {receiver_ids: [userId]},
-                        {is_announcement: true}
+                    $or:[
+                        {room_id: req.body.room_id},
+                        {$or:[
+                            {receiver_ids: [userId]},
+                            {is_announcement: true}
+                        ]}
                     ]
                 })
                 .countDocuments()
@@ -483,7 +516,7 @@ module.exports = {
             let minifiedfileExist = fs.existsSync(minifiedfileLocation);
             if (!minifiedfileExist) {
                 compress_images(
-                    "https://api.localtalk.mobi/uploads/public_chat_messages/uploads/public_chat_messages/" + req.params.imageName, "https://api.localtalk.mobi/uploads/public_chat_messages/uploads/public_chat_messages/minified/",
+                    "https://api.localtalk.mobi/uploads/public_chat_messages/" + req.params.imageName, "https://api.localtalk.mobi/uploads/public_chat_messages/minified/",
                     { compress_force: false, statistic: true, autoupdate: true },
                     false,
                     { jpg: { engine: "mozjpeg", command: ["-quality", "60"] } },
@@ -502,20 +535,21 @@ module.exports = {
                             });
                         }
                         if (completed === true) {
-                            //res.sendFile(`${fileLocation}`);
-                            res.json({
-                                success: true,
-                                message: 'success',
-                                data: {
-                                    fileLocation,
-                                    minifiedfileLocation
-                                }
-                            });
+                            res.sendFile(`${fileLocation}`);
+                            // res.json({
+                            //     success: true,
+                            //     message: 'success, minifying finished',
+                            //     data: {
+                            //         fileLocation,
+                            //         minifiedfileLocation
+                            //     }
+                            // });
                             // Doing something.
                         }
                     }
                 );
             }else{
+                res.sendFile(`${fileLocation}`);
                 res.json({
                     success: true,
                     message: 'success',
@@ -526,7 +560,7 @@ module.exports = {
                 });
             }
 
-            //res.sendFile(`${fileLocation}`);
+            // res.sendFile(`${minifiedfileLocation}`);
         }
     }
 };

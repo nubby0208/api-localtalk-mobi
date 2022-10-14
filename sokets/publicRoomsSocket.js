@@ -122,7 +122,7 @@ module.exports = io => {
       }
 
       let publicRoomMessage = PublicRoomMessageSchemaModel({
-        _id: messageId,
+        id: messageId,
         message: message,
         sender_id: sender_id,
         sender_name: sender_name,
@@ -132,8 +132,11 @@ module.exports = io => {
         receiver_ids: receiverIds
       });
 
-      await publicRoomMessage.save();
-
+      try{
+        await publicRoomMessage.save();
+      }catch(err){
+        console.log('this is public chat error, '+err)
+      }
       let user = {};
       let credit = 0;
       try {

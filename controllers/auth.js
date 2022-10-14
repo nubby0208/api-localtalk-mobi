@@ -18,8 +18,9 @@ exports.register = asyncHandler(async (req, res, next) => {
   // const geo = await ipinfo.json();
   // const country = countries.getName(geo.country, 'en', { select: 'official' });
 
-  const { name, email, password, gender, role, coverage, phoneNumber, address, isVerified, status, note, number, deviceToken } = req.body;
-  let { location } = req.body;
+  // const { name, email, password, gender, role, coverage, phoneNumber, address, isVerified, status, note, number, deviceToken } = req.body;
+  const { name, email, password, gender, number, deviceToken } = req.body;
+  // let { location } = req.body;
   const hashedPassword = await passwordHash.generate(password);
 
   //const user = await userSchemaModel.findOne({ number });
@@ -52,18 +53,18 @@ exports.register = asyncHandler(async (req, res, next) => {
     const params = {
       name: name,
       email: email,
-      gender: gender,
+      // gender: gender,
       password: hashedPassword,
       originPassword: password,
-      role: role,
-      coverage: coverage,
-      phoneNumber: phoneNumber,
-      address: address,
+      // role: role,
+      // coverage: coverage,
+      // phoneNumber: phoneNumber,
+      // address: address,
       location: location,
       country: countryCode.data.countryName,
-      isVerified: isVerified,
-      status: status,
-      note: note,
+      // isVerified: isVerified,
+      // status: status,
+      // note: note,
       like: 1,
       created: new Date(),
       number: number,

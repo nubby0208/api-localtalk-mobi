@@ -20,7 +20,7 @@ exports.register = asyncHandler(async (req, res, next) => {
 
   // const { name, email, password, gender, role, coverage, phoneNumber, address, isVerified, status, note, number, deviceToken } = req.body;
   const { name, email, password, gender, number, deviceToken } = req.body;
-  // let { location } = req.body;
+  let { location } = req.body;
   const hashedPassword = await passwordHash.generate(password);
 
   //const user = await userSchemaModel.findOne({ number });

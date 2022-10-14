@@ -122,7 +122,7 @@ module.exports = io => {
       }
 
       let publicRoomMessage = PublicRoomMessageSchemaModel({
-        id: messageId,
+        // _id: messageId,
         message: message,
         sender_id: sender_id,
         sender_name: sender_name,

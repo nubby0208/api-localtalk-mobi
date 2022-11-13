@@ -1,5 +1,4 @@
 "use strict";
-//created by Hatem Ragap
 
 // message type 0 mean is only String in flutter ignore img field
 // message type 1  mean is only Img in flutter ignore message field
